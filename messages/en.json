@@ -66,6 +66,7 @@
     "label": "Video Frame Rate",
     "placeholder": "Please select video frame rate"
   },
+  "fullscreen": "View full screen",
   "general": "General",
   "global": {
     "error": {

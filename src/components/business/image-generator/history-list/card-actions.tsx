@@ -4,7 +4,13 @@ import { useState } from "react";
 
 import dayjs from "dayjs";
 import { useSetAtom } from "jotai";
-import { Download, Loader2, MousePointerClick, Trash2 } from "lucide-react";
+import {
+  Download,
+  Fullscreen,
+  Loader2,
+  MousePointerClick,
+  Trash2,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
@@ -18,12 +24,14 @@ interface CardActionsProps {
   task: ImageTask;
   className?: string;
   onImageSelect: (imageUrl: string) => void;
+  onFullscreen: (imageUrl: string) => void;
 }
 
 export function CardActions({
   task,
   className,
   onImageSelect,
+  onFullscreen,
 }: CardActionsProps) {
   const t = useTranslations();
   const [isDownloading, setIsDownloading] = useState(false);
@@ -33,12 +41,15 @@ export function CardActions({
 
   const handleOnclick = (
     e: React.MouseEvent<HTMLButtonElement>,
-    type: "use" | "download" | "delete"
+    type: "use" | "download" | "delete" | "fullscreen"
   ) => {
     e.stopPropagation();
     e.preventDefault();
 
     switch (type) {
+      case "fullscreen":
+        onFullscreen(task.image!);
+        break;
       case "use":
         onImageSelect(task.image!);
         break;
@@ -108,6 +119,17 @@ export function CardActions({
 
   return (
     <div className={cn("flex flex-row", className)}>
+      <Button
+        onClick={(e) => handleOnclick(e, "fullscreen")}
+        variant="ghost"
+        className="transition-all duration-200 hover:scale-120 hover:bg-transparent"
+        size="icon"
+        title={t("fullscreen")}
+        disabled={!task.image}
+      >
+        <Fullscreen className="h-4 w-4 text-white" />
+      </Button>
+
       <Button
         onClick={(e) => handleOnclick(e, "use")}
         variant="ghost"

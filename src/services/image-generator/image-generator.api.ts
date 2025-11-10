@@ -15,13 +15,14 @@ export async function createImageGeneratorJob(
   params: Partial<ImageGeneratorSchemaType>
 ) {
   const { prompt } = params;
+  let _params = params;
   if (prompt && !isEnglish(prompt)) {
     const translateResponse = await translatePrompt(prompt);
-    params.prompt = translateResponse.output;
+    _params = { ...params, prompt: translateResponse.output };
   }
 
   const response = await apiKy.post(IMAGE_GENERATOR_API_URL, {
-    json: params,
+    json: _params,
   });
 
   return response.json<ImageGeneratorSchemaResponseType>();

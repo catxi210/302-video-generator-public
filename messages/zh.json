@@ -66,6 +66,7 @@
     "label": "视频帧率",
     "placeholder": "请选择视频帧率"
   },
+  "fullscreen": "全屏查看",
   "general": "通用",
   "global": {
     "error": {

@@ -25,6 +25,7 @@ import { useIsMobile } from "@/hooks/global/use-mobile";
 import { imageTasksAtom } from "@/stores/slices/image-task.store";
 
 import { EmptyInterface } from "../empty-interface";
+import { FullscreenImageViewer } from "./fullscreen-image-viewer";
 import { TaskCard } from "./history-list/history-card";
 
 interface ImageGeneratorProps {
@@ -42,11 +43,14 @@ export function ImageGenerator({
   const isMobile = useIsMobile();
   const t = useTranslations();
   const [activeTab, setActiveTab] = useState("form");
+  const [fullscreenImageUrl, setFullscreenImageUrl] = useState<string | null>(
+    null
+  );
 
   return (
     <>
       {isMobile ? (
-        <Drawer open={open} onOpenChange={onOpenChange}>
+        <Drawer open={open && !fullscreenImageUrl} onOpenChange={onOpenChange}>
           <DrawerContent className="flex h-[80vh] flex-col">
             <DrawerHeader>
               <DrawerTitle className="text-normal">
@@ -93,6 +97,7 @@ export function ImageGenerator({
                             onOpenChange?.(false);
                           }
                         }}
+                        onFullscreen={setFullscreenImageUrl}
                       />
                     ))}
                   </Masonry>
@@ -102,7 +107,7 @@ export function ImageGenerator({
           </DrawerContent>
         </Drawer>
       ) : (
-        <Dialog open={open} onOpenChange={onOpenChange}>
+        <Dialog open={open && !fullscreenImageUrl} onOpenChange={onOpenChange}>
           <DialogContent className="flex h-[90vh] min-h-[776px] min-w-[1200px] flex-col overflow-hidden p-8">
             <DialogHeader className="hidden">
               <DialogTitle>{t("image_generator_title")}</DialogTitle>
@@ -133,6 +138,7 @@ export function ImageGenerator({
                             onOpenChange?.(false);
                           }
                         }}
+                        onFullscreen={setFullscreenImageUrl}
                       />
                     ))}
                   </Masonry>
@@ -141,6 +147,13 @@ export function ImageGenerator({
             </div>
           </DialogContent>
         </Dialog>
+      )}
+
+      {fullscreenImageUrl && (
+        <FullscreenImageViewer
+          imageUrl={fullscreenImageUrl}
+          onClose={() => setFullscreenImageUrl(null)}
+        />
       )}
     </>
   );

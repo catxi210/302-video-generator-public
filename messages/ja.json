@@ -66,6 +66,7 @@
     "label": "ビデオフレームレート",
     "placeholder": "ビデオのフレームレートを選択してください"
   },
+  "fullscreen": "全画面表示",
   "general": "一般",
   "global": {
     "error": {
